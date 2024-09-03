@@ -1,13 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "sorting.h"
+#include "searching.h"
 
+void start();
+void init();
+void searching();
+void sorting();
+void print(int *arr, int n);
+void choices();
 
 int n;
 int arr[100];
 
+void print(int *arr, int n) {
+    for(int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+}
+
 void sorting(){
+    printf("==================================================================\n");
+    printf("===================You Want To Sorting the array==================\n");
+    printf("==================================================================\n\n\n");
+
     int choice;
-    system("cls");
     printf("Which sorting technique you want to use?\n");
     printf("1.) Bubble Sort\n");
     printf("2.) Insertion Sort\n");
@@ -17,10 +34,62 @@ void sorting(){
     printf("\nEnter your choice : ");
     scanf("%d", &choice);
 
-    
+    switch(choice) {
+        case 1:
+        bubble_sort(arr, n);
+        print(arr, n);
+        break;
+        case 2:
+        insertion_sort(arr, n);
+        print(arr, n);
+        break;
+        case 3:
+        selection_sort(arr, n);
+        print(arr, n);
+        break;
+        case 4:
+        start();
+        break;
+        default:
+        system("cls");
+        printf("\nInvalid Input!\n\n");
+        sorting();
+        break;
+    }
 }
+
 void searching(){
-    return;
+    printf("==================================================================\n");
+    printf("=================You Want To Do Searching in array================\n");
+    printf("==================================================================\n\n\n");
+    int target;
+    printf("\nPlease Enter the target element you want to search : ");
+    scanf("%d", &target);
+    int choice;
+    printf("Which searching technique you want to use?\n");
+    printf("1.) Linear Search\n");
+    printf("2.) Binary Search\n");
+    printf("3.) Exit.\n");
+
+    printf("\nEnter your choice : ");
+    scanf("%d", &choice);
+
+    switch(choice) {
+        case 1:
+        linear_search(arr, n, target);
+        break;
+        case 2:
+        binary_search(arr, n, target);
+        break;
+        case 3:
+        start();
+        break;
+        default:
+        system("cls");
+        printf("\nInvalid Input!\n\n");
+        searching();
+        break;
+    }
 }
 
 void choices() {
@@ -32,9 +101,11 @@ void choices() {
 
     switch(choice) {
         case 1 :
+        system("cls");
         searching();
         break;
         case 2 :
+        system("cls");
         sorting();
         break;
         default :
