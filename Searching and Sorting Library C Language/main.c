@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "sorting.h"
 #include "searching.h"
 
@@ -13,6 +14,23 @@ void choices();
 int n;
 int arr[100];
 
+bool check(int *arr, int n) {
+    int cnt = 1;
+    for(int i = 0; i < n-1; i++) {
+        if(arr[i] < arr[i+1]){
+            cnt++;
+        }
+    }
+    if(cnt == n) {
+        return true;
+    }
+    else {
+        printf("Your array is not sorted first sort array to apply binary search!\n");
+        choices();
+        return false;
+    }
+}
+
 void print(int *arr, int n) {
     for(int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
@@ -21,7 +39,7 @@ void print(int *arr, int n) {
 
 void sorting(){
     printf("==================================================================\n");
-    printf("===================You Want To Sorting the array==================\n");
+    printf("================== You Want To Sorting the array =================\n");
     printf("==================================================================\n\n\n");
 
     int choice;
@@ -36,19 +54,18 @@ void sorting(){
 
     switch(choice) {
         case 1:
-        bubble_sort(arr, n);
+        // bubble_sort(arr, n);
         print(arr, n);
         break;
         case 2:
-        insertion_sort(arr, n);
+        // insertion_sort(arr, n);
         print(arr, n);
         break;
         case 3:
-        selection_sort(arr, n);
+        // selection_sort(arr, n);
         print(arr, n);
         break;
         case 4:
-        start();
         break;
         default:
         system("cls");
@@ -60,7 +77,7 @@ void sorting(){
 
 void searching(){
     printf("==================================================================\n");
-    printf("=================You Want To Do Searching in array================\n");
+    printf("================ You Want To Do Searching in array ===============\n");
     printf("==================================================================\n\n\n");
     int target;
     printf("\nPlease Enter the target element you want to search : ");
@@ -76,13 +93,14 @@ void searching(){
 
     switch(choice) {
         case 1:
-        linear_search(arr, n, target);
+        // linear_search(arr, n, target);
         break;
         case 2:
-        binary_search(arr, n, target);
+        if(check(arr, n)) {
+            // binary_search(arr, n, target);
+        }
         break;
         case 3:
-        start();
         break;
         default:
         system("cls");
@@ -93,7 +111,7 @@ void searching(){
 }
 
 void choices() {
-    system("cls");
+    
     int choice;
     printf("\nWhich operation you want to do on array?\n\n");
     printf("1.) Searching \t\t 2.) Sorting\n");
@@ -109,6 +127,7 @@ void choices() {
         sorting();
         break;
         default :
+        system("cls");
         printf("Invalid Input!");
         choices();
         break;
@@ -122,14 +141,14 @@ void init() {
     for(int i = 0; i < n; i++) { 
         scanf("%d", &arr[i]);
     }
-
+    system("cls");
     choices();
 }
 
 void start() {
     system("cls");
     printf("==================================================================\n");
-    printf("==================Welcome TO Array Manipulator====================\n");
+    printf("================= Welcome TO Array Manipulator ===================\n");
     printf("==================================================================\n");
 
     printf("\n\n");
