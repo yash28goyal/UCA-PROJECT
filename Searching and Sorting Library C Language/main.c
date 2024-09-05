@@ -54,15 +54,15 @@ void sorting(){
 
     switch(choice) {
         case 1:
-        // bubble_sort(arr, n);
+        bubble_sort(arr, n);
         print(arr, n);
         break;
         case 2:
-        // insertion_sort(arr, n);
+        insertion_sort(arr, n);
         print(arr, n);
         break;
         case 3:
-        // selection_sort(arr, n);
+        selection_sort(arr, n);
         print(arr, n);
         break;
         case 4:
@@ -93,11 +93,11 @@ void searching(){
 
     switch(choice) {
         case 1:
-        // linear_search(arr, n, target);
+        linear_search(arr, n, target);
         break;
         case 2:
         if(check(arr, n)) {
-            // binary_search(arr, n, target);
+            binary_search(arr, n, target);
         }
         break;
         case 3:
