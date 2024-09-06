@@ -1,6 +1,6 @@
 <h1>Student Database Management System</h1>
 
-<img src="./images/image.wepb">
+<img src="./images/image.webp">
 
 <h2>Overview</h2>
 <p>The <strong>Student Database Management System</strong> is a console-based application written in C. This system allows teachers to manage student data efficiently and provides students with an interface to view their personal information and upcoming examinations or tests.</p>
