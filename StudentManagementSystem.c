@@ -8,22 +8,64 @@ void signup();
 void student_menu(char* username);
 void teacher_menu(char* username);
 void view_student_details(char* username);
-void view_upcoming_exams();
+void view_upcoming_exams(char* username);
 void add_student(char* username1);
 void remove_student(char* username1);
-void get_student_details(char* username1);
+void get_student_details(char* username1);  
 void update_student_details(char* username1);
 void add_upcoming_exam(char* username1);
 void view_students_List(char* username1);
 
 void view_students_List(char* username1) {
+    system("cls");
+    char line[300], mentor_name[50], file_mentor_name[50];
+    FILE *file;
+    int found = 0;
 
+    printf("Enter mentor name to filter students: ");
+    fgets(mentor_name, 50, stdin);
+    strtok(mentor_name, "\n"); 
+
+    file = fopen("students.csv", "r");
+    if (file == NULL) {
+        printf("Error opening file.\n");
+        exit(1);
+    }
+
+    printf("Students with mentor: %s\n", mentor_name);
+    printf("-------------------------------------------------------------\n");
+    printf("Username | Roll No | Class | Phone | Mentor\n");
+    printf("-------------------------------------------------------------\n");
+
+    while (fgets(line, sizeof(line), file)) {
+        char username[50], rollno[10], class_name[10], phone[15];
+        
+        sscanf(line, "%[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%[^,],%[^,],%[^,],%*[^,],%*[^,],%[^,]", 
+               username, class_name, phone, rollno, file_mentor_name);
+
+        if (strcmp(mentor_name, file_mentor_name) == 0) {
+            printf("%s | %s | %s | %s | %s\n", username, rollno, class_name, phone, file_mentor_name);
+            found = 1;
+        }
+    }
+
+    fclose(file);
+
+    if (!found) {
+        printf("No students found for the mentor: %s\n", mentor_name);
+    }
+    
+    printf("\nPress any key to exit : ");
+    scanf("%*s");
+    system("cls");
+    teacher_menu(username1);
 }
 
 void add_upcoming_exam(char* username1) {
     system("cls");
     char exam_name[50], exam_date[15], exam_time[10];
     FILE *file;
+    printf("\nEnter the details of the exam.\n\n");
 
     printf("Enter exam name: ");
     fgets(exam_name, 50, stdin);
@@ -37,18 +79,22 @@ void add_upcoming_exam(char* username1) {
     fgets(exam_time, 10, stdin);
     strtok(exam_time, "\n");
 
-    // Open file in append mode to add new examination
+
     file = fopen("exams.csv", "a");
     if (file == NULL) {
         printf("Error opening file.\n");
         exit(1);
     }
 
-    // Write examination details to the file
+
     fprintf(file, "Exam Name: %s, Date: %s, Time: %s\n", exam_name, exam_date, exam_time);
     fclose(file);
 
     printf("Upcoming examination/test added successfully!\n");
+    
+    printf("\nPress any key to exit : ");
+    scanf("%*s");
+    system("cls");
     teacher_menu(username1);
 
 }
@@ -72,7 +118,7 @@ void update_student_details(char* username1) {
 
     while (fgets(line, sizeof(line), file)) {
         char file_rollno[10];
-        sscanf(line, "%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%[^,]", file_rollno);
+        sscanf(line, "%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%[^,]", file_rollno);
 
         if (strcmp(rollno, file_rollno) == 0) {
             found = 1;
@@ -119,7 +165,7 @@ void update_student_details(char* username1) {
             fgets(mentor_name, 50, stdin);
             strtok(mentor_name, "\n");
 
-            fprintf(temp, "%s,%s,student,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n", username, password, marks, attendance, father_name, mother_name, class_name, phone, rollno, age, dob, mentor_name);
+            fprintf(temp, "%s,%s,student,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n", username, password, marks, attendance, father_name, mother_name, class_name, phone, rollno, age, dob, mentor_name);
         } else {
             fputs(line, temp);
         }
@@ -136,6 +182,10 @@ void update_student_details(char* username1) {
     } else {
         printf("Student not found.\n");
     }
+    
+    printf("\nPress any key to exit : ");
+    scanf("%*s");
+    system("cls");
     teacher_menu(username1);
 }
 
@@ -145,7 +195,7 @@ void get_student_details(char* username1) {
     FILE *file;
     int found = 0;
 
-    printf("Enter roll number of student to get details: ");
+    printf("\n\nEnter roll number of student to get details: ");
     fgets(rollno, 10, stdin);
     strtok(rollno, "\n");
 
@@ -157,7 +207,7 @@ void get_student_details(char* username1) {
 
     while (fgets(line, sizeof(line), file)) {
         char file_rollno[10];
-        sscanf(line, "%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%[^,]", file_rollno);
+        sscanf(line, "%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%[^,]", file_rollno);
 
         if (strcmp(rollno, file_rollno) == 0) {
             char username[50], marks[10], attendance[10], father_name[50], mother_name[50];
@@ -188,6 +238,10 @@ void get_student_details(char* username1) {
     if (!found) {
         printf("Student not found.\n");
     }
+
+    printf("\nPress any key to exit : ");
+    scanf("%*s");
+    system("cls");
     teacher_menu(username1);
 }
 
@@ -197,9 +251,9 @@ void remove_student(char* username1) {
     FILE *file, *temp;
     int found = 0;
 
-    printf("Enter roll number of student to remove: ");
+    printf("\n\nEnter roll number of student to remove: ");
     fgets(rollno, sizeof(rollno), stdin);
-    strtok(rollno, "\n");  // Remove trailing newline character
+    strtok(rollno, "\n");
 
     file = fopen("students.csv", "r");
     temp = fopen("temp.csv", "w");
@@ -209,29 +263,17 @@ void remove_student(char* username1) {
         exit(1);
     }
 
-    // Read each line in the students.csv file
     while (fgets(line, sizeof(line), file)) {
-        // Break the line into tokens to extract the roll number
-        char *token;
-        char *file_rollno = NULL;
-        int column = 0;
+        char file_rollno[10];
 
-        // Tokenize the line
-        token = strtok(line, ",");
-        while (token != NULL) {
-            column++;
-            if (column == 9) {  // Assuming roll number is the 9th column
-                file_rollno = token;
-                break;
-            }
-            token = strtok(NULL, ",");
-        }
+        // Corrected sscanf format to get the roll number
+        sscanf(line, "%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%[^,]", file_rollno);
 
-        // Compare the roll numbers
-        if (file_rollno != NULL && strcmp(rollno, file_rollno) != 0) {
-            // If not a match, write the line to the temp file
+        printf("%s\n", file_rollno);
+        // Compare and write to temp file if not a match
+        if (strcmp(rollno, file_rollno) != 0) {
             fputs(line, temp);
-        } else if (file_rollno != NULL && strcmp(rollno, file_rollno) == 0) {
+        } else {
             found = 1;
         }
     }
@@ -239,21 +281,24 @@ void remove_student(char* username1) {
     fclose(file);
     fclose(temp);
 
-    // Replace the original file with the updated temp file
     remove("students.csv");
     rename("temp.csv", "students.csv");
 
-    if (found) {
+    if (found ) {
         printf("Student removed successfully!\n");
     } else {
         printf("Student not found.\n");
     }
 
+    printf("\nPress any key to exit : ");
+    scanf("%*s");
+    system("cls");
     teacher_menu(username1);
 }
 
 void add_student(char* username1) {
     system("cls");
+    printf("Enter the details of student\n\n");
     char username[50], password[50] = "default", occupation[20] = "student";
     char marks[10], attendance[10], father_name[50], mother_name[50], class_name[10];
     char phone[15], rollno[10], age[5], dob[15], mentor[50];
@@ -303,23 +348,26 @@ void add_student(char* username1) {
     fgets(mentor, 50, stdin);
     strtok(mentor, "\n");
 
-    // Open file in append mode to add new student
+
     file = fopen("students.csv", "a");
     if (file == NULL) {
         printf("Error opening file.\n");
         exit(1);
     }
 
-    // Write student details to the file
-    fprintf(file, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n", username, password, occupation, marks, attendance, father_name, mother_name, class_name, phone, rollno, age, dob, mentor);
+
+    fprintf(file, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,\n", username, password, occupation, marks, attendance, father_name, mother_name, class_name, phone, rollno, age, dob, mentor);
     fclose(file);
 
     system("cls");
     printf("Student added successfully!\n");
+    printf("\nPress any key to exit : ");
+    scanf("%*s");
+    system("cls");
     teacher_menu(username1);
 }
 
-void view_upcoming_exams() {
+void view_upcoming_exams(char *username) {
     system("cls");
     char line[100];
     FILE *file;
@@ -330,16 +378,20 @@ void view_upcoming_exams() {
         exit(1);
     }
 
-    printf("Upcoming Exams/Tests:\n");
+    printf("Upcoming Exams/Tests:\n\n");
 
     while (fgets(line, sizeof(line), file)) {
-        char exam_name[50], exam_date[15];
-        sscanf(line, "%[^,],%s", exam_name, exam_date);
+        char exam_name[50], exam_date[15], exam_time[50];
+        sscanf(line, "%[^,],%[^,],%[^,]", exam_name, exam_date, exam_time);
 
-        printf("Exam/Test: %s, Date: %s\n", exam_name, exam_date);
+        printf("%s, \t %s, \t %s\n", exam_name, exam_date, exam_time);
     }
 
     fclose(file);
+    printf("\n\nPress any key to exit : ");
+    scanf("%*s");
+    system("cls");
+    student_menu(username);
 }
 
 void view_student_details(char* username) {
@@ -386,6 +438,10 @@ void view_student_details(char* username) {
     if (!found) {
         printf("Student details not found.\n");
     }
+    printf("Press any key to exit : ");
+    scanf("%*s");
+    system("cls");
+    student_menu(username);
 }
 
 void teacher_menu(char* username) {
@@ -398,6 +454,7 @@ void teacher_menu(char* username) {
     printf("4. Update Student Details\n");
     printf("5. Add Upcoming Exam/Test\n");
     printf("6. View Students List\n");
+    printf("7. Exit.\n");
     printf("Enter your choice: ");
     scanf("%d", &choice);
     getchar();
@@ -421,6 +478,8 @@ void teacher_menu(char* username) {
         case 6:
             view_students_List(username);
             break;
+        case 7:
+            break;
         default:
             printf("Invalid choice.\n");
     }
@@ -432,6 +491,7 @@ void student_menu(char* username) {
     printf("Welcome, %s\n", username);
     printf("1. View Details\n");
     printf("2. View Upcoming Exams\n");
+    printf("3. Exit.\n");
     printf("Enter your choice: ");
     scanf("%d", &choice);
     getchar();
@@ -441,7 +501,9 @@ void student_menu(char* username) {
             view_student_details(username);
             break;
         case 2:
-            view_upcoming_exams();
+            view_upcoming_exams(username);
+            break;
+        case 3:
             break;
         default:
             printf("Invalid choice.\n");
@@ -548,7 +610,7 @@ void start() {
     printf("==============================================================================\n");
 
     int choice;
-    printf("\n1.) Login \t\t\t 2.) Signup\n");
+    printf("\n1.) Login \t\t\t 2.) Signup \t\t\t 3.) Exit.\n");
     printf("Enter your choice : ");
     scanf("%d", &choice);
     getchar();
@@ -562,6 +624,8 @@ void start() {
     case 2:
         system("cls");
         signup();
+        break;
+    case 3:
         break;
     default:
         printf("Invalid Choice!!\n");
