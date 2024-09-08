@@ -73,6 +73,11 @@ void sorting(){
         sorting();
         break;
     }
+
+    printf("\nPress any key to continue : ");
+    scanf("%*s");
+    system("cls");
+    choices();
 }
 
 void searching(){
@@ -108,13 +113,18 @@ void searching(){
         searching();
         break;
     }
+
+    printf("\nPress any key to continue : ");
+    scanf("%*s");
+    system("cls");
+    choices();
 }
 
 void choices() {
     
     int choice;
     printf("\nWhich operation you want to do on array?\n\n");
-    printf("1.) Searching \t\t 2.) Sorting\n");
+    printf("1.) Searching. \t\t 2.) Sorting. \t\t 3.) Exit.\n");
     scanf("%d", &choice);
 
     switch(choice) {
@@ -125,6 +135,8 @@ void choices() {
         case 2 :
         system("cls");
         sorting();
+        break;
+        case 3 :
         break;
         default :
         system("cls");
