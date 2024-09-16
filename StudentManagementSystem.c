@@ -269,7 +269,7 @@ void remove_student(char* username1) {
         // Corrected sscanf format to get the roll number
         sscanf(line, "%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%*[^,],%[^,]", file_rollno);
 
-        printf("%s\n", file_rollno);
+        // printf("%s\n", file_rollno);
         // Compare and write to temp file if not a match
         if (strcmp(rollno, file_rollno) != 0) {
             fputs(line, temp);
